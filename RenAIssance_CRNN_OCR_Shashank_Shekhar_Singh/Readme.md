@@ -104,7 +104,7 @@ For a detailed walkthrough of the project's development, challenges, and solutio
 * Familiarize yourself with the project structure and datasets.
 
 ## How to Contribute
-* Submit pull requests for bug fixes, feature enhancements, or documentation improvements.
+* Submit pull requests for bug fixes, feature enhancements,or documentation improvements.
 * Follow coding best practices and ensure proper documentation.
 * Run tests and validate changes before submitting a pull request.
 
