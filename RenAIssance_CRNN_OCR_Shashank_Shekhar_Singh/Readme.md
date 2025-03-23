@@ -95,24 +95,6 @@ For a detailed walkthrough of the project's development, challenges, and solutio
 | CTC Loss | 0.1 |
 | Validation Loss | 0.07 |
 
-## Contributing
--We welcome contributions from anyone interested in improving historical OCR models. Here’s how you can contribute:
-
-## Getting Started
-* Fork the repository and clone it locally.
-* Install the required dependencies as mentioned in requirements.txt.
-* Familiarize yourself with the project structure and datasets.
-
-## How to Contribute
-* Submit pull requests for bug fixes, feature enhancements,or documentation improvements.
-* Follow coding best practices and ensure proper documentation.
-* Run tests and validate changes before submitting a pull request.
-
-## Areas to Contribute
-* Model Enhancement: Improve OCR accuracy, optimize architecture, and test new approaches.
-* Dataset Refinement: Improve labeling, preprocessing, and augmentation.
-* Documentation & Tutorials: Help make the project more accessible with guides and example notebooks.
-
 ## Acknowledgements
 
 This project is supported by the [HumanAI Foundation](https://humanai.foundation/) and Google Summer of Code 2024. Detailed documentation and a journey of this project can be found on my [blog post](https://medium.com/@shashankshekharsingh1205/my-journey-with-humanai-in-the-google-summer-of-code24-program-part-2-bb42abce3495).

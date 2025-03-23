@@ -1,24 +1,129 @@
-![thumbnail](https://github.com/user-attachments/assets/b0aa865c-416c-4a3a-92be-56a1a77c8f4e)
-# RenAIssance
-The analysis of historical documents is a critical yet costly method in the Humanities. To reduce these costs, AI technology, specifically OCR (Optical Character Recognition), has started to be utilized. However, for many years, there was a lack of accurate OCR tools for Spanish documents from the Renaissance period, despite their academic importance. To address this issue, the HumanAI Foundation launched the **RenAIssance** project, where contributors implement accurate OCR models using various approaches.
+# Historical Text Recognition using CRNN Model
 
-# Dataset 
-![letters](https://github.com/user-attachments/assets/c10584db-8f68-4897-a6c4-c70411ed9515)
+This project aims to address the challenge of text recognition from `historical Spanish printed sources` dating back to the `seventeenth century`, a domain where existing Optical Character Recognition (OCR) tools often fail due to the complexity and variability of the texts. Leveraging hybrid end-to-end models based on a combination of CNN and RNN architectures, namely `CNN-RNN`, our research seeks to develop advanced machine learning techniques capable of accurately transcribing non-standard printed text. This project is a part of the `RenAIssance project`, a large project under the HumanAI organization. I am `Shashank Shekhar Singh`, a third year student from `IIT BHU, India` and have been developing this project as a part of the `Google Summer of Code program' 2024`.
 
-The dataset used to train these models consists of images of printed documents from the target era, collected from diverse sources. A portion of the data has been manually labeled by RenAIssance mentors, who are experts in Spanish historical documents. The following printing irregularities in the data present challenges for creating high-accuracy OCR models:
+<p align="center">
+  <img src="images/humanai_logo.jpg" alt="HumanAI" style="height: 100px; margin-right: 20px;"/>
+  <img src="images/gsoc_logo.png" alt="GSOC" style="height: 50px; padding-bottom: 50px" />
+</p>
 
-- **Interchangeable Characters:** Characters such as 'u' and 'v', and 'f' and 's' were often used interchangeably.
-- **Tildes and Diacritical Marks:** Used to save space or due to the reuse of type molds.
-- **Old Spellings and Modern Interpretations:** Variations in character usage between historical and modern Spanish.
-- **Line-End Hyphens:** Words split across lines were not always hyphenated.
+## Table of Contents
 
-Additionally, the deterioration and unique layouts of historical documents further complicate OCR tasks, making content extraction from images difficult.
+- [Project Goals](#Project-Goals)
+- [Installation](#installation)
+- [About The Project](#About-The-Project)
+- [Datasets and Models](#datasets-and-models)
+- [Acknowledgements](#acknowledgements)
+- [License](#license)
+- [Links](#links)
 
-# Method  
-To address these challenges, contributors have introduced various state-of-the-art (SOTA) methods. These can be broadly classified into the following three approaches:
+## Project Goals
 
-1. **CRNN Approach**  
-2. **Vision Transformer Approaches**  
-3. **Self-Supervised Learning Approach**  
+1. **Development of Hybrid End-to-End Models:** The primary goal of this project is to design, implement, and fine-tune hybrid end-to-end models based on CRNN architectures for text recognition. By combining the strengths of architectures such as recurrent neural networks (RNN) and convolutional neural networks (CNN), the models aim to effectively capture both local and global features in the historical Spanish printed text enhancing accuracy and robustness in transcription.
+2. **Achieving High Accuracy:** The ultimate objective was to train machine
+learning models capable of extracting text from seventeenth-century Spanish printed sources with at least **80%** accuracy. This entails extensive experimentation, hyperparameter tuning, and dataset curation to ensure the models generalize well across various styles, fonts, and degradation levels present in historical documents. Achieving this goal will signify a significant advancement in text recognition, particularly in the context of preserving and analyzing ancient textual artifacts.
 
-All models, regardless of the approach used, achieve over 90% accuracy. For more detailed information on each approach, please refer to the contributors' repositories.
+## Installation
+
+You don't need to install anything externally, just fire up the python notebook on your favourite coding platform (Google Colab, Jupter Notebook, Kaggle etc) and start running the code cells one after the other. All the packages that need to be installed are kept as the first code block in the Python Notebook.
+
+### Project Directory Structure
+1. **Dataset_Generation.ipynb** - It is a Python Notebook to generate training data from book PDF and Transcription. If you just want to train and test the CRNN model, you can directly skip running this notebook.
+
+2. **Model.ipynb** - It is a standalone Python Notebook that is used for model training and inferencing. It is trained on a corrected and modified data generated during the course of the GSoC period.
+
+## About The Project
+
+#### Irregularities and Ambiguities
+- **Interchangeable Characters**: Characters like 'u' & 'v', and 'f' & 's' were used interchangeably. Assume 'u' at the beginning of word and 'v' inside word. Assume 's' at the beginning/end of a word, 'f' within a word.
+- **Tildes (horizontal “cap” – ignore grave/backwards accents)**: 
+    1. When a q is capped, assume ue follows
+    2. When a vowel is capped, assume n follows
+    3. When n is capped, this is always the letter ñ
+- **Old Spellings**: ç old spelling is always modern z.
+- **Line End Hyphens**: Some line end hyphens not present. Leaving words split for now.
+
+#### Dataset and Pre-processing
+- **Input Data:** The main dataset consists of 31 scanned pages: 25 have transcriptions available, the last 6 pages of transcriptions have been removed to later evaluate the degree of accuracy and viability of the test method employed.
+- **PDF and DOC to Images Folder**: This flowchart depicts the path followed to generate the dataset for training the CRNN Model.
+    <p align="center"><img src="images/Pre_Process.png" alt="CRNN Architecture" style="height: 500px; margin-right: 20px;"/><p>
+- **CRAFT Model**: The CRAFT model for Bounding Box Detection and Localisation gives the following results.
+    <p align="center">
+    <img src="images/imageOriginal.png" alt="Before CRAFT Model" style="height: 400px; margin-right: 20px;"/>
+    <img src="images/imageCRAFT.jpg" alt="After CRAFT Model" style="height: 400px;" />
+    </p>
+- **Enhancements**: Augmentation techniques like rotation and Gaussian noise addition.
+
+#### Model Architecture
+
+- **CRNN Model**: The Convolutional Recurrent Neural Networks is the combination of two of
+the most prominent neural networks. The CRNN (convolutional recurrent
+neural network) involves CNN (convolutional neural network) followed by
+the RNN (Recurrent neural networks).
+<p align="center"><img src="images/CRNN.png" alt="CRNN Architecture" style="height: 400px; margin-right: 20px;"/></p>
+
+- ***CNN***: CNNs are used for extracting spatial features from input images, transforming them into a feature map.
+<p align="center"><img src="images/CNN.png" alt="CNN Architecture" style="height: 300px; margin-right: 20px;"/></p>
+
+- ***RNN***: RNNs then process these sequentially to capture contextual dependencies and predict character sequences.
+<p align="center"><img src="images/RNN.png" alt="RNN Architecture" style="height: 300px; margin-right: 20px;"/></p>
+
+- ***Current CRNN Architecture***: The model plot represents the CRNN architecture that has been trained in the Python Notebook shared above.
+<p align="center"><img src="images/CRNN_Plot.png" alt="CRNN Architecture" style="height: 600px; margin-right: 20px;"/></p>
+
+#### Training and Evaluation
+- **Hyperparameter Optimization**: Selection through vast amount of experimentation.
+- **Model Calibration**: Utilizes validation loss and other techniques to align sequence likelihoods with quality, improving output accuracy.
+- **Evaluation Metrics**: Performance evaluated using CTC Loss and Validation loss.
+
+- ***Loss vc Epochs***: The model has been made quite performant and light weight. It get's an optimum amount of training in just 10-15 epochs.
+<p align="center"><img src="images/Loss.png" alt="Learning Curve" style="height: 300px; margin-right: 20px;"/></p>
+
+For a detailed walkthrough of the project's development, challenges, and solutions, read the complete blog post [here](https://medium.com/@shashankshekharsingh1205/my-journey-with-humanai-in-the-google-summer-of-code24-program-part-2-bb42abce3495).
+
+## Datasets and Models
+- The `Padilla - Nobleza virtuosa_testExtract.pdf` can be downloaded from [here](https://github.com/Shashankss1205/RenAIssance/blob/main/RenAIssance_CRNN_OCR_Shashank_Shekhar_Singh/data/Padilla_Nobleza_virtuosa_testExtract.pdf) 
+- The `Padilla - 1 Nobleza virtuosa_testTranscription.docx` can be downloaded from [here](https://github.com/Shashankss1205/RenAIssance/blob/main/RenAIssance_CRNN_OCR_Shashank_Shekhar_Singh/data/Padilla_Nobleza_virtuosa_testTranscription.docx) 
+- The ocr model used can be directly generated by running the python notebook or can be downloaded from [here](https://github.com/Shashankss1205/RenAIssance/blob/main/RenAIssance_CRNN_OCR_Shashank_Shekhar_Singh/Model/ocr_model.h5)
+
+## Model Performance
+
+| Metric | Value |
+|--------|-------|
+| Character Accuracy | 95.79% |
+| CER | 0.027 |
+| CTC Loss | 0.1 |
+| Validation Loss | 0.07 |
+
+## Contributing
+-We welcome contributions from anyone interested in improving historical OCR models. Here’s how you can contribute:
+
+## Getting Started
+* Fork the repository and clone it locally.
+* Install the required dependencies as mentioned in requirements.txt.
+* Familiarize yourself with the project structure and datasets.
+
+## How to Contribute
+* Submit pull requests for bug fixes, feature enhancements,or documentation improvements.
+* Follow coding best practices and ensure proper documentation.
+* Run tests and validate changes before submitting a pull request.
+
+## Areas to Contribute
+* Model Enhancement: Improve OCR accuracy, optimize architecture, and test new approaches.
+* Dataset Refinement: Improve labeling, preprocessing, and augmentation.
+* Documentation & Tutorials: Help make the project more accessible with guides and example notebooks.
+
+## Acknowledgements
+
+This project is supported by the [HumanAI Foundation](https://humanai.foundation/) and Google Summer of Code 2024. Detailed documentation and a journey of this project can be found on my [blog post](https://medium.com/@shashankshekharsingh1205/my-journey-with-humanai-in-the-google-summer-of-code24-program-part-2-bb42abce3495).
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+## Links
+
+- [Google Summer of Code 2024 Project](https://summerofcode.withgoogle.com/programs/2024/projects/lg7vQeMM)
+- [HumanAI Foundation](https://humanai.foundation/)
+
+Feel free to fork the repository and submit pull requests. For major changes, please open an issue to discuss your ideas first. Contributions are always welcomed!
